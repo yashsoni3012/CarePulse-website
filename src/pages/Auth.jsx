@@ -169,10 +169,7 @@ export default function Auth({ mode }) {
   return (
     <div className="mx-auto grid max-w-5xl items-center gap-10 px-5 py-12 md:grid-cols-2">
       <div>
-        <span className="text-xs font-bold uppercase tracking-wider text-pine flex items-center gap-1.5">
-          <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-          Live PythonAnywhere API Authentication
-        </span>
+       
 
         <h1 className="mt-2 text-4xl font-extrabold tracking-tight text-ink">
           {isReg ? "Create your account" : doc ? "Doctor Sign In" : "Patient Sign In"}
@@ -186,86 +183,8 @@ export default function Auth({ mode }) {
             : "Sign in to your patient account to book appointments and consult verified doctors via the live patient login endpoint."}
         </p>
 
-        {/* Live Backend API Info Card */}
-        <div className="mt-6 rounded-2xl bg-sea/70 p-4 border border-ink/10 space-y-2">
-          <p className="text-xs font-bold text-ink flex items-center gap-1.5">
-            <span className="text-sm">🌐</span> Dedicated Login Endpoints:
-          </p>
-          <div className="space-y-1.5">
-            <div className={`p-2.5 rounded-xl border transition ${doc ? "bg-emerald-50 border-emerald-300 ring-2 ring-emerald-200" : "bg-white/70 border-ink/5"}`}>
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-emerald-900 flex items-center gap-1">
-                  <span>🩺</span> Doctor Login API
-                </span>
-                <span className="text-[10px] font-mono text-emerald-700 bg-emerald-100/60 px-1.5 py-0.5 rounded">POST</span>
-              </div>
-              <code className="text-[11px] font-mono text-ink/80 block mt-1 break-all">
-                https://sudhanshutask.pythonanywhere.com/doctor/login/
-              </code>
-            </div>
+    
 
-            <div className={`p-2.5 rounded-xl border transition ${!doc ? "bg-sky-50 border-sky-300 ring-2 ring-sky-200" : "bg-white/70 border-ink/5"}`}>
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-sky-900 flex items-center gap-1">
-                  <span>👤</span> Patient Login API
-                </span>
-                <span className="text-[10px] font-mono text-sky-700 bg-sky-100/60 px-1.5 py-0.5 rounded">POST</span>
-              </div>
-              <code className="text-[11px] font-mono text-ink/80 block mt-1 break-all">
-                https://sudhanshutask.pythonanywhere.com/login/
-              </code>
-            </div>
-          </div>
-        </div>
-
-        {/* Quick Demo Test Logins Card */}
-        {!isReg && (
-          <div className="mt-6 rounded-2xl bg-pine/10 p-4 border border-pine/20">
-            <p className="text-xs font-bold text-pine flex items-center justify-between">
-              <span>⚡ Live Demo API Credentials</span>
-              <span className="text-[10px] font-normal text-pine/80">1-Click Test</span>
-            </p>
-            <p className="mt-1 text-xs text-ink/70">
-              Click either card below to instantly authenticate with live backend credentials:
-            </p>
-
-            <div className="mt-3 grid gap-2 sm:grid-cols-2">
-              {/* Doctor Button */}
-              <button
-                type="button"
-                disabled={Boolean(loadingAction)}
-                onClick={() => handle1ClickLogin("akash")}
-                className="flex flex-col items-start rounded-xl bg-emerald-600 p-2.5 text-left text-white shadow-xs hover:bg-emerald-700 active:scale-[0.98] transition cursor-pointer disabled:opacity-60"
-              >
-                <div className="flex items-center gap-1.5 text-xs font-bold">
-                  <span>🩺</span>
-                  <span>Dr. Akash (Doctor)</span>
-                </div>
-                <span className="mt-0.5 text-[10px] text-white/80 font-mono">akash@gmail.com</span>
-                <span className="mt-1 inline-block rounded-md bg-white/20 px-1.5 py-0.5 text-[9px] font-semibold">
-                  {loadingAction === "akash" ? "Authenticating..." : "1-Click Doctor Login →"}
-                </span>
-              </button>
-
-              {/* Patient Button */}
-              <button
-                type="button"
-                disabled={Boolean(loadingAction)}
-                onClick={() => handle1ClickLogin("susma")}
-                className="flex flex-col items-start rounded-xl bg-sky-600 p-2.5 text-left text-white shadow-xs hover:bg-sky-700 active:scale-[0.98] transition cursor-pointer disabled:opacity-60"
-              >
-                <div className="flex items-center gap-1.5 text-xs font-bold">
-                  <span>👤</span>
-                  <span>Susma (Patient)</span>
-                </div>
-                <span className="mt-0.5 text-[10px] text-white/80 font-mono">susma@gmail.com</span>
-                <span className="mt-1 inline-block rounded-md bg-white/20 px-1.5 py-0.5 text-[9px] font-semibold">
-                  {loadingAction === "susma" ? "Authenticating..." : "1-Click Patient Login →"}
-                </span>
-              </button>
-            </div>
-          </div>
-        )}
       </div>
 
       <form onSubmit={submit} className="space-y-4 rounded-3xl bg-white p-6 shadow-md border border-ink/10 md:p-8">
@@ -300,22 +219,6 @@ export default function Auth({ mode }) {
           </div>
         </div>
 
-        {/* Active Endpoint Indicator Bar */}
-        {!isReg && (
-          <div className={`rounded-xl p-2.5 border text-xs flex items-center justify-between ${doc ? "bg-emerald-50/70 border-emerald-200" : "bg-sky-50/70 border-sky-200"}`}>
-            <span className="font-semibold text-ink/80 flex items-center gap-1.5 text-[11px]">
-              <span className={`h-2 w-2 rounded-full ${doc ? "bg-emerald-500" : "bg-sky-500"} animate-pulse`} />
-              Target API: <code className="font-mono text-[10px] font-bold">{doc ? "/doctor/login/" : "/login/"}</code>
-            </span>
-            <button
-              type="button"
-              onClick={() => autofillCredentials(role)}
-              className="text-[11px] font-bold text-pine hover:underline"
-            >
-              Autofill {doc ? "Dr. Akash" : "Susma"}
-            </button>
-          </div>
-        )}
 
         {/* Profile Photo Upload Section for Register */}
         {isReg && (
