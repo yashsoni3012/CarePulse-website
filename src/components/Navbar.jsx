@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
+import { normalizeImageUrl } from "../services/api.js";
 import Logo from "./Logo.jsx";
 
 export default function Navbar() {
@@ -146,7 +147,7 @@ export default function Navbar() {
                   <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded-full ring-2 ring-white shadow-xs">
                     {user.image ? (
                       <img
-                        src={user.image}
+                        src={normalizeImageUrl(user.image)}
                         alt={displayName}
                         className="h-full w-full object-cover object-top"
                         onError={(e) => {
@@ -205,7 +206,7 @@ export default function Navbar() {
                       <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-2xl bg-sea ring-2 ring-pine/20 shadow">
                         {user.image ? (
                           <img
-                            src={user.image}
+                            src={normalizeImageUrl(user.image)}
                             alt={displayName}
                             className="h-full w-full object-cover object-top"
                           />
@@ -316,14 +317,23 @@ export default function Navbar() {
                 )}
               </div>
             ) : (
-              <>
-                <NavLink to="/login" className="px-3 py-2 text-sm font-semibold text-ink/80 hover:text-pine">
-                  Log in
+              <div className="flex items-center gap-2">
+                <NavLink
+                  to="/login?role=patient"
+                  className="rounded-full bg-sky-50 border border-sky-200 px-3 py-1.5 text-xs font-bold text-sky-800 hover:bg-sky-100 transition flex items-center gap-1.5 shadow-2xs"
+                >
+                  <span>👤</span> Patient Login
                 </NavLink>
-                <Link to="/register" className="btn !py-2 !px-4 text-xs font-bold shadow-sm">
-                  Create account
+                <NavLink
+                  to="/login?role=doctor"
+                  className="rounded-full bg-emerald-50 border border-emerald-200 px-3 py-1.5 text-xs font-bold text-emerald-800 hover:bg-emerald-100 transition flex items-center gap-1.5 shadow-2xs"
+                >
+                  <span>🩺</span> Doctor Login
+                </NavLink>
+                <Link to="/register" className="btn !py-1.5 !px-3.5 text-xs font-bold shadow-sm ml-1">
+                  Sign up
                 </Link>
-              </>
+              </div>
             )}
           </div>
 
@@ -348,7 +358,11 @@ export default function Navbar() {
                 <div className="flex items-center gap-3">
                   <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full bg-ink text-white grid place-items-center font-bold">
                     {user.image ? (
-                      <img src={user.image} alt={displayName} className="h-full w-full object-cover object-top" />
+                      <img
+                        src={normalizeImageUrl(user.image)}
+                        alt={displayName}
+                        className="h-full w-full object-cover object-top"
+                      />
                     ) : (
                       userInitials
                     )}
@@ -399,19 +413,19 @@ export default function Navbar() {
               ) : (
                 <div className="grid grid-cols-2 gap-2">
                   <NavLink
-                    to="/login"
+                    to="/login?role=patient"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="btn !bg-sea !text-ink !py-2 text-center text-xs font-bold"
+                    className="btn !bg-sky-50 !text-sky-800 border border-sky-200 !py-2 text-center text-xs font-bold"
                   >
-                    Log in
+                    👤 Patient Login
                   </NavLink>
-                  <Link
-                    to="/register"
+                  <NavLink
+                    to="/login?role=doctor"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="btn !py-2 text-center text-xs font-bold"
+                    className="btn !bg-emerald-50 !text-emerald-800 border border-emerald-200 !py-2 text-center text-xs font-bold"
                   >
-                    Register
-                  </Link>
+                    🩺 Doctor Login
+                  </NavLink>
                 </div>
               )}
             </div>

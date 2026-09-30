@@ -16,9 +16,8 @@ export default function Doctors() {
     return doctors
       .filter((d) => {
         const matchesSpec = spec === "All" || d.specialization === spec;
-        const matchesQuery = (d.name + " " + d.city + " " + d.specialization)
-          .toLowerCase()
-          .includes(q.toLowerCase().trim());
+        const searchableText = `${d.name} ${d.city || ""} ${d.clinic_address || ""} ${d.clinic_name || ""} ${d.specialization} ${d.qualification || ""} ${d.registration_number || ""}`.toLowerCase();
+        const matchesQuery = searchableText.includes(q.toLowerCase().trim());
         return matchesSpec && matchesQuery;
       })
       .sort((a, b) => {
@@ -36,14 +35,20 @@ export default function Doctors() {
       {/* Header Banner */}
       <div className="rounded-3xl bg-ink p-8 md:p-12 text-white shadow-xl relative overflow-hidden">
         <div className="relative z-10 max-w-2xl">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-coral/20 px-3 py-1 text-xs font-bold text-coral uppercase tracking-wider">
-            Verified Healthcare Directory
-          </span>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-coral/20 px-3 py-1 text-xs font-bold text-coral uppercase tracking-wider">
+              Verified Healthcare Directory
+            </span>
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/20 border border-emerald-500/30 px-3 py-1 text-xs font-bold text-emerald-300">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              Live API Synced
+            </span>
+          </div>
           <h1 className="mt-4 text-3xl font-extrabold md:text-5xl tracking-tight">
             Consult Qualified Specialists
           </h1>
           <p className="mt-3 text-sm md:text-base text-white/80 leading-relaxed">
-            Connect with certified clinicians across {specs.length - 1} specialties. Compare clinical experience, patient reviews, and book direct consultation slots instantly.
+            Connect with verified clinicians from our medical registry. Compare clinical experience, patient reviews, and book direct consultation slots instantly.
           </p>
         </div>
 
@@ -118,7 +123,7 @@ export default function Doctors() {
       {/* Results Count & Active Filters */}
       <div className="mt-8 flex flex-wrap items-center justify-between gap-3 text-sm text-ink/70">
         <p className="font-medium">
-          Showing <span className="font-bold text-ink">{filteredDoctors.length}</span> of {doctors.length} verified doctors
+          Showing <span className="font-bold text-ink">{filteredDoctors.length}</span> of {doctors.length} verified {doctors.length === 1 ? "doctor" : "doctors"}
           {spec !== "All" && <span> in <strong className="text-pine">{spec}</strong></span>}
           {q && <span> matching "<strong className="text-ink">{q}</strong>"</span>}
         </p>

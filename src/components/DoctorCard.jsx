@@ -1,7 +1,19 @@
 import { Link } from "react-router-dom";
+import { normalizeImageUrl } from "../services/api.js";
 
 export default function DoctorCard({ d }) {
-  const ini = (d?.name || "").replace(/^Dr\.\s*/i, "").trim().split(/\s+/).filter(Boolean).map((w) => w[0]).slice(0, 2).join("").toUpperCase() || "DR";
+  const ini =
+    (d?.name || "")
+      .replace(/^Dr\.\s*/i, "")
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean)
+      .map((w) => w[0])
+      .slice(0, 2)
+      .join("")
+      .toUpperCase() || "DR";
+
+  const imageUrl = normalizeImageUrl(d?.image);
 
   return (
     <Link
@@ -11,9 +23,9 @@ export default function DoctorCard({ d }) {
       <div>
         {/* Top Portrait Image Header with Uniform Dimensions */}
         <div className="relative h-56 w-full overflow-hidden bg-gradient-to-b from-sea to-white/30">
-          {d.image ? (
+          {imageUrl ? (
             <img
-              src={d.image}
+              src={imageUrl}
               alt={d.name}
               className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-105"
               onError={(e) => {
@@ -24,7 +36,7 @@ export default function DoctorCard({ d }) {
           ) : null}
           <div
             className="h-full w-full place-items-center bg-gradient-to-br from-ink to-pine font-display text-4xl font-bold text-white"
-            style={{ display: d.image ? "none" : "grid" }}
+            style={{ display: imageUrl ? "none" : "grid" }}
           >
             {ini}
           </div>
@@ -42,20 +54,31 @@ export default function DoctorCard({ d }) {
           </span>
 
           {/* Bottom Left: Verified Pill */}
-          <span className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-pine/90 px-2.5 py-0.5 text-[11px] font-semibold text-white shadow backdrop-blur">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-              <polyline points="20 6 9 17 4 12" />
-            </svg>
-            Verified Doctor
-          </span>
+          <div className="absolute bottom-3 left-3 flex items-center gap-1.5">
+            <span className="inline-flex items-center gap-1 rounded-full bg-pine/90 px-2.5 py-0.5 text-[11px] font-semibold text-white shadow backdrop-blur">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+              {d.isApiDoctor ? "Doctor" : "Verified Doctor"}
+            </span>
+            {d.registration_number && (
+              <span className="inline-block rounded-full bg-black/60 px-2 py-0.5 text-[10px] font-mono text-white/90 backdrop-blur">
+                #{d.registration_number}
+              </span>
+            )}
+          </div>
         </div>
 
         {/* Card Body */}
         <div className="p-5">
-          <h3 className="text-xl font-extrabold text-ink group-hover:text-pine transition leading-snug">
-            {d.name}
-          </h3>
-          <p className="mt-1 text-xs font-medium text-ink/60 truncate">{d.education}</p>
+          <div className="flex items-start justify-between gap-2">
+            <h3 className="text-xl font-extrabold text-ink group-hover:text-pine transition leading-snug">
+              {d.name}
+            </h3>
+          </div>
+          <p className="mt-1 text-xs font-medium text-ink/60 truncate">
+            {d.education || d.qualification || "MBBS Practitioner"}
+          </p>
 
           {/* Details Badges */}
           <div className="mt-3.5 flex flex-wrap gap-2 text-xs">
@@ -66,13 +89,21 @@ export default function DoctorCard({ d }) {
               </svg>
               {d.experience} yrs exp
             </span>
+
             <span className="inline-flex items-center gap-1.5 rounded-xl bg-sea px-2.5 py-1 font-semibold text-ink/80">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
                 <circle cx="12" cy="10" r="3" />
               </svg>
-              {d.city}
+              {d.clinic_address || d.city}
             </span>
+
+            {d.clinic_name && (
+              <span className="inline-flex items-center gap-1.5 rounded-xl bg-pine/10 px-2.5 py-1 font-semibold text-pine">
+                <span>🏥</span>
+                <span className="truncate max-w-[150px]">{d.clinic_name}</span>
+              </span>
+            )}
           </div>
 
           {/* Bio Snippet */}

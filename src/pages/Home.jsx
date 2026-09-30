@@ -147,7 +147,9 @@ export default function Home() {
                     Dr
                   </span>
                   <div>
-                    <p className="text-xs font-bold leading-none">6 Specialists</p>
+                    <p className="text-xs font-bold leading-none">
+                      {doctors.length} Verified Specialist{doctors.length === 1 ? "" : "s"}
+                    </p>
                     <p className="mt-1 text-[11px] text-pine font-medium flex items-center gap-1">
                       <span className="h-1.5 w-1.5 rounded-full bg-pine animate-pulse" />
                       Available Today
@@ -201,7 +203,7 @@ export default function Home() {
             <h2 className="mt-1 text-3xl font-bold">Find care by specialty</h2>
           </div>
           <Link to="/doctors" className="text-sm font-semibold text-pine hover:underline">
-            View all 6 specialties →
+            Explore Verified Doctors →
           </Link>
         </div>
 
@@ -239,11 +241,11 @@ export default function Home() {
               <h2 className="mt-1 text-3xl font-bold">Meet our doctors</h2>
             </div>
             <Link to="/doctors" className="font-semibold text-pine hover:underline text-sm">
-              See all {doctors.length} doctors →
+              See all {doctors.length} {doctors.length === 1 ? "doctor" : "doctors"} →
             </Link>
           </div>
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {doctors.slice(0, 3).map((d) => (
+            {doctors.map((d) => (
               <DoctorCard key={d.id} d={d} />
             ))}
           </div>

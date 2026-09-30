@@ -90,6 +90,15 @@ export const seedDoctors = [
 
 export const seedReviews = [
   {
+    id: "r0",
+    doctorId: "1",
+    userId: 1,
+    userName: "Susma",
+    rating: 5,
+    comment: "Dr. Akash provided very thorough consultation at Vastral clinic. Explained the treatment clearly and followed up on recovery.",
+    createdAt: "2026-09-28T11:00:00Z"
+  },
+  {
     id: "r1",
     doctorId: "d1",
     userId: 901,
